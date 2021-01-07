@@ -1,9 +1,11 @@
 defmodule EngpinWeb.VideoController do
   use EngpinWeb, :controller
 
+  import PhoenixVideoStream.Util, only: [build_video_path: 1]
+  
   alias Engpin.Teachers
   alias Engpin.Teachers.Video
-  import PhoenixVideoStream.Util, only: [build_video_path: 1]
+
   
   def index(conn, _params) do
     videos = Teachers.list_videos()
@@ -16,10 +18,11 @@ defmodule EngpinWeb.VideoController do
   end
 
   def create(conn, %{"video" => video_params}) do
+    IO.inspect video_params
   changeset = Video.changeset(%Video{}, video_params)
-  case Teachers.create_video(changeset) do
+  case Teachers.create_video(video_params) do
     {:ok, video} ->
-      persist_file(video, video_params["video_file"])
+      persist_file(video, video_params["video_file_id"])
         
       conn
       |> put_flash(:info, "Video created successfully.")

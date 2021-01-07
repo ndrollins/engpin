@@ -11,11 +11,12 @@ defmodule Engpin.Teachers.Video do
 
     timestamps()
   end
-
+  @required_fields ~w(title video_file)a
+  @optional_fields ~w(filename)a
   @doc false
-  def changeset(video, attrs \\ :empty) do
-    video
-    |> cast(attrs, @required_fields, @optionalfields)
+  def changeset(model, params \\ :empty) do
+    model
+    |> cast(params, @required_fields, @optional_fields)
     |> put_video_file()
   end
 
