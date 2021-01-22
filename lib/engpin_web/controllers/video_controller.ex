@@ -1,12 +1,11 @@
 defmodule EngpinWeb.VideoController do
   use EngpinWeb, :controller
 
-  import PhoenixVideoStream.Util, only: [build_video_path: 1]
-  
+  import Engpin.Util, only: [build_video_path: 1]
+
   alias Engpin.Teachers
   alias Engpin.Teachers.Video
 
-  
   def index(conn, _params) do
     videos = Teachers.list_videos()
     render(conn, "index.html", videos: videos)
@@ -18,30 +17,30 @@ defmodule EngpinWeb.VideoController do
   end
 
   def create(conn, %{"video" => video_params}) do
-    IO.inspect video_params
-  changeset = Video.changeset(%Video{}, video_params)
-  case Teachers.create_video(video_params) do
-    {:ok, video} ->
-      persist_file(video, video_params["video_file_id"])
-        
-      conn
-      |> put_flash(:info, "Video created successfully.")
-      |> redirect(to: Routes.video_path(conn, :show, :video))
-    {:error, changeset} ->
-      render(conn, "new.html", changeset: changeset)
+    case Teachers.create_video(video_params) do
+      {:ok, video} ->
+        persist_file(video, video_params["filename"])
+
+        conn
+        |> put_flash(:info, "Video created successfully.")
+        |> redirect(to: Routes.video_path(conn, :index))
+
+      {:error, changeset} ->
+        render(conn, "new.html", changeset: changeset)
     end
   end
-#def create(conn, %{"video" => video_params}) do
-    #  case Teachers.create_video(video_params) do
-    #    {:ok, video} ->
-    #      conn
-   #      |> put_flash(:info, "Video created successfully.")
-   #      |> redirect(to: Routes.video_path(conn, :show, video))
-  
-    #    {:error, %Ecto.Changeset{} = changeset} ->
-   #      render(conn, "new.html", changeset: changeset)
-   #  end
-  #end
+
+  # def create(conn, %{"video" => video_params}) do
+  #  case Teachers.create_video(video_params) do
+  #    {:ok, video} ->
+  #      conn
+  #      |> put_flash(:info, "Video created successfully.")
+  #      |> redirect(to: Routes.video_path(conn, :show, video))
+
+  #    {:error, %Ecto.Changeset{} = changeset} ->
+  #      render(conn, "new.html", changeset: changeset)
+  #  end
+  # end
 
   def show(conn, %{"id" => id}) do
     video = Teachers.get_video!(id)
@@ -77,11 +76,12 @@ defmodule EngpinWeb.VideoController do
     |> redirect(to: Routes.video_path(conn, :index))
   end
 
-  defp persist_file(video, %{path: temp_path}) do
-   video_path = build_video_path(video)
+  defp persist_file(_video, filename) do
+    video_path = build_video_path(filename)
+
     unless File.exists?(video_path) do
-     video_path |> Path.dirname() |> File.mkdir_p()
-     File.copy!(temp_path, video_path)
+      video_path |> Path.dirname() |> File.mkdir_p()
+      File.copy!(temp_path, video_path)
     end
   end
 end

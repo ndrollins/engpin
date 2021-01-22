@@ -44,10 +44,10 @@ defmodule EngpinWeb.Endpoint do
 
   # This new plug eliminates the 8mb or less video limitation
   plug Plug.Parsers,
- parsers: [:urlencoded, :multipart, :json],
- pass: ["*/*"],
- json_decoder: Jason,
- length: 400_000_000
+    parsers: [:urlencoded, :multipart, :json],
+    pass: ["*/*"],
+    json_decoder: Jason,
+    length: 400_000_000
 
   plug Plug.MethodOverride
   plug Plug.Head

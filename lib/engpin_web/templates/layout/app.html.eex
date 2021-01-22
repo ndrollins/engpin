@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Engpin · Phoenix Framework</title>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <script src="http://vjs.zencdn.net/5.8.7/video.js"></script>
     <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    <link href="http://vjs.zencdn.net/5.8.7/video-js.css" rel="stylesheet">
   </head>
   <body>
     <header>

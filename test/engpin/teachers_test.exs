@@ -6,8 +6,18 @@ defmodule Engpin.TeachersTest do
   describe "videos" do
     alias Engpin.Teachers.Video
 
-    @valid_attrs %{content_type: "some content_type", filename: "some filename", path: "some path", title: "some title"}
-    @update_attrs %{content_type: "some updated content_type", filename: "some updated filename", path: "some updated path", title: "some updated title"}
+    @valid_attrs %{
+      content_type: "some content_type",
+      filename: "some filename",
+      path: "some path",
+      title: "some title"
+    }
+    @update_attrs %{
+      content_type: "some updated content_type",
+      filename: "some updated filename",
+      path: "some updated path",
+      title: "some updated title"
+    }
     @invalid_attrs %{content_type: nil, filename: nil, path: nil, title: nil}
 
     def video_fixture(attrs \\ %{}) do

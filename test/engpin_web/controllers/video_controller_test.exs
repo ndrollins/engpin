@@ -3,8 +3,18 @@ defmodule EngpinWeb.VideoControllerTest do
 
   alias Engpin.Teachers
 
-  @create_attrs %{content_type: "some content_type", filename: "some filename", path: "some path", title: "some title"}
-  @update_attrs %{content_type: "some updated content_type", filename: "some updated filename", path: "some updated path", title: "some updated title"}
+  @create_attrs %{
+    content_type: "some content_type",
+    filename: "some filename",
+    path: "some path",
+    title: "some title"
+  }
+  @update_attrs %{
+    content_type: "some updated content_type",
+    filename: "some updated filename",
+    path: "some updated path",
+    title: "some updated title"
+  }
   @invalid_attrs %{content_type: nil, filename: nil, path: nil, title: nil}
 
   def fixture(:video) do
@@ -75,6 +85,7 @@ defmodule EngpinWeb.VideoControllerTest do
     test "deletes chosen video", %{conn: conn, video: video} do
       conn = delete(conn, Routes.video_path(conn, :delete, video))
       assert redirected_to(conn) == Routes.video_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.video_path(conn, :show, video))
       end

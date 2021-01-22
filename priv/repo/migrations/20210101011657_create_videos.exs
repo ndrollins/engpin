@@ -10,6 +10,5 @@ defmodule Engpin.Repo.Migrations.CreateVideos do
 
       timestamps()
     end
-
   end
 end
