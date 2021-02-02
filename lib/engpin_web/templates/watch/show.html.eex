@@ -1,0 +1,1 @@
+<%= render(EngpinWeb.VideoView, "show.html", assigns) %>
