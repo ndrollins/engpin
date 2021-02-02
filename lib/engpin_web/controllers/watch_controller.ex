@@ -1,12 +1,12 @@
-defmodule Engpin.WatchController do
+defmodule EngpinWeb.WatchController do
   use EngpinWeb, :controller
 
-  import Engpin.Util
+  #import Engpin.Util
 
-  alias Engpin.Video
+  alias Engpin.Teachers
 
-  def show(%{req_headers: headers} = conn, %{"id" => id}) do
-    video = Repo.get_video!(id)
-    render(conn, headers, video)
+  def show(%{req_headers: _headers} = conn, %{"id" => id}) do
+    video = Teachers.get_video!(id)
+    render(conn, "show.html", video: video)
   end
 end

@@ -17,9 +17,11 @@ defmodule EngpinWeb.VideoController do
   end
 
   def create(conn, %{"video" => video_params}) do
+    temp_path = video_params["video_file"].path
+    video_params = update_path(video_params, "priv/static/videos#{video_params["video_file"].filename}")
     case Teachers.create_video(video_params) do
       {:ok, video} ->
-        persist_file(video, video_params["filename"])
+        save_file(video, temp_path)
 
         conn
         |> put_flash(:info, "Video created successfully.")
@@ -76,12 +78,18 @@ defmodule EngpinWeb.VideoController do
     |> redirect(to: Routes.video_path(conn, :index))
   end
 
-  defp persist_file(_video, filename) do
-    video_path = build_video_path(filename)
+  defp  save_file(video, temp_path) do
+    video_path = build_video_path(video.filename)
 
     unless File.exists?(video_path) do
       video_path |> Path.dirname() |> File.mkdir_p()
       File.copy!(temp_path, video_path)
     end
+  end
+
+  defp update_path(video_params, new_path) do
+    Map.update(video_params, "video_file", nil, fn video_file ->
+      Map.put(video_file, :path, new_path)
+    end)
   end
 end
